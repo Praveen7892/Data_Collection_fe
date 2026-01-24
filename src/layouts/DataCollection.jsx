@@ -139,6 +139,8 @@ const Configuration = () => {
           value={path}
           readOnly
           placeholder="Select folder..."
+          className="input-file-path"
+
         />
 
         <button onClick={handleBrowse}>Browse</button>
