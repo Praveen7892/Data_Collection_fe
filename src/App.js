@@ -3,7 +3,7 @@ import "./styles/global.css";
 import DataCollection from "./layouts/DataCollection";
 
 const App = () => {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -13,7 +13,7 @@ const App = () => {
     <div
       data-theme={theme}
     >
-      <DataCollection toggleTheme={toggleTheme} />
+      <DataCollection toggleTheme={toggleTheme} theme={theme} />
     </div>
   );
 };

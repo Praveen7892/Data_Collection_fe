@@ -10,6 +10,8 @@
   --color-text-error: #ef4444;
   --color-text-success: #22c55e;
 
+  --hardware-msg-bg: ;
+
   --font-sans: "Roboto", "Helvetica", "Arial", sans-serif;
 
   --space-xs: 4px;
@@ -36,6 +38,9 @@
   --color-text-accent: #007bff;
   --color-text-error: #b91c1c;
   --color-text-success: #16a34a;
+
+  --hardware-msg-bg: #dceaf8;
+
 
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -94,7 +99,6 @@ body {
   flex: 3;
   min-width: 300px;
   border-radius: var(--radius-md);
-  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
   box-shadow: var(--shadow-md);
 
   transition:
@@ -124,7 +128,6 @@ body {
   color: var(--color-text);
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-md);
-  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
   box-shadow: var(--shadow-sm);
   transition:
     background 0.5s ease,
@@ -132,7 +135,59 @@ body {
   width: 100%;
 }
 
-button {
+
+.theme-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* Track */
+.switch-track {
+  position: relative;
+  width: 42px;
+  height: 22px;
+  background: #020617;
+  border-radius: 999px;
+  border: 1px solid #1e293b;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+/* Thumb */
+.switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #e5e7eb;
+  border-radius: 50%;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+/* Light mode */
+.theme-switch.light .switch-track {
+  background: #e2e8f0;
+  border-color: #cbd5f5;
+}
+
+.theme-switch.light .switch-thumb {
+  transform: translateX(20px);
+  background: #020617;
+}
+
+/* Icon */
+.switch-icon {
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+
+.path-selector-browse-btn {
   background: linear-gradient(
     135deg,
     var(--color-primary),
@@ -143,7 +198,6 @@ button {
   padding: var(--space-sm) var(--space-lg);
   border: none;
   font-weight: bold;
-  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); */
   box-shadow: var(--shadow-lg);
 
   cursor: pointer;
@@ -153,7 +207,7 @@ button {
     background 0.3s ease;
 }
 
-button:hover {
+.path-selector-browse-btn:hover {
   transform: translateY(-2px);
   background: linear-gradient(
     135deg,
@@ -220,17 +274,29 @@ button:hover {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
-.camera-grid {
+.hardware-msg{
+  border: 1px solid #007bff;
+  padding: var(--space-md);
+  text-align: center;
+  border-radius: var(--radius-md);
+  /* color: var(--color-primary); */
+  color: var(--color-text);
+
+  font-weight: 600;
+  background-color: var(--hardware-msg-bg);
+}
+
+/* .camera-grid {
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 2fr));
+  grid-template-columns: repeat(auto-fit, minmax(380px, 2fr));
   gap: 20px;
   align-items: stretch;
   padding: 10px;
   box-sizing: border-box;
-}
+} */
 
-.camera-card {
+/* .camera-card {
   display: flex;
   flex-direction: column;
   background: #ffffff;
@@ -300,22 +366,125 @@ button:hover {
 .camera-status.inactive {
   background: #f1f5f9;
   color: #64748b;
+} */
+
+
+/* =====================
+   CAMERA GRID
+===================== */
+.camera-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  grid-auto-rows: 350px; 
+  gap: 20px; 
+  padding: 10px;
+  box-sizing: border-box;
 }
 
+.camera-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #e6edf5;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  height: 100%; /* Fills the grid row */
+}
+
+
+.camera-preview {
+  height: 300px; /* FIXED PREVIEW HEIGHT */
+  width: 100%;
+  background-color: #f4f7fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.camera-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.camera-icon {
+  font-size: 50px;
+  color: #9aa4b2;
+}
+
+
+.camera-footer {
+  height: 60px; /* FIXED FOOTER HEIGHT */
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e6edf5;
+  background-color: #fff;
+}
+
+.camera-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.camera-status {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.camera-status.active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.camera-status.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+
+/* Tablets */
 @media (max-width: 1024px) {
   .camera-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: 220px;
+    gap: 18px;
+  }
+
+  .camera-preview {
+    height: 170px;
   }
 
   .camera-footer {
-    height: 55px;
+    height: 50px;
   }
 }
 
+/* Small Tablets / Large Phones */
 @media (max-width: 768px) {
   .camera-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: 200px;
     gap: 16px;
+  }
+
+  .camera-preview {
+    height: 150px;
   }
 
   .camera-footer {
@@ -332,14 +501,20 @@ button:hover {
   }
 }
 
+/* Phones */
 @media (max-width: 480px) {
   .camera-grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-auto-rows: 180px;
     gap: 12px;
   }
 
+  .camera-preview {
+    height: 130px;
+  }
+
   .camera-footer {
-    height: 45px;
+    height: 50px;
   }
 
   .camera-name {
