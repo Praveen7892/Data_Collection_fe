@@ -1,68 +1,108 @@
-import { useState } from "react";
-import { capture as captureAPI, getCaptureImages } from "../services/services";
+import { useEffect, useState } from "react";
+import {
+  capture as captureAPI,
+  getCaptureImages,
+  getCameras,
+} from "../services/services";
 
 const useDataCollection = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [response, setResponse] = useState(null);
   const [data, setData] = useState(null);
+  const [cameras, setCameras] = useState(null);
 
-// const capture = async () => {
-//   setLoading(true);
-//   setError(null);
+  const [activeCamera, setActiveCamera] = useState(null);
+  const [selectedCameras, setSelectedCameras] = useState([]);
+  const [mode, setMode] = useState("SOFTWARE");
+  const [initialized, setInitialized] = useState(false);
 
-//  try {
-//   console.log("Calling capture API...");
-//   const res = await captureAPI({ capture: true });
-//   console.log("Capture API success:", res);
+  const getAllCameras = async () => {
+    try {
+      const res = await getCameras();
+      // console.log(res);
+      setCameras(res.response);
+    } catch (e) {
+      return e;
+    }
+  };
 
-//   console.log("Calling getCaptureImages...");
-//   const data = await getCaptureImages();
-//   console.log("Images received:", data);
+  const capture = async () => {
+    setLoading(true);
+    setError(null);
 
-//   setData(data);
-// } catch (err) {
-//   console.error("Error happened:", err);
-// }finally {
-//     setLoading(false);
-//   }
-// };
+    try {
+      const res = await captureAPI({ capture: true });
+      const captureData = await getCaptureImages();
 
+      setData({
+        message: captureData.message ?? "captured",
+        response: captureData.response ?? { captured_images: [] },
+        status_code: captureData.status_code ?? 200,
+      });
+    } catch (err) {
+      console.error("Error happened:", err);
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-const capture = async () => {
-  setLoading(true);
-  setError(null);
-
-  try {
-    console.log("Calling capture API...");
-    const res = await captureAPI({ capture: true });
-    console.log("Capture API success:", res);
-
-    console.log("Calling getCaptureImages...");
-    const captureData = await getCaptureImages();
-    console.log("Images received:", captureData);
-
-    // Make sure the structure is consistent
-    setData({
-      message: captureData.message ?? "captured",
-      response: captureData.response ?? { captured_images: [] },
-      status_code: captureData.status_code ?? 200
+  const toggleCameraSelection = (camera) => {
+    setSelectedCameras((prev) => {
+      const exists = prev.find((c) => c.id === camera.id);
+      if (exists) {
+        return prev.filter((c) => c.id !== camera.id);
+      }
+      return [...prev, { ...camera, aoi: null }];
     });
-  } catch (err) {
-    console.error("Error happened:", err);
-    setError(err);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
+  const handleCardClick = (camera) => {
+    const selectedCam = selectedCameras.find((c) => c.id === camera.id);
+
+    if (!selectedCam) {
+      setActiveCamera({ ...camera, aoi: null });
+    } else {
+      setActiveCamera({ ...selectedCam });
+    }
+  };
+
+  const handleInitialize = () => {
+    console.log(selectedCameras, "::::::::::::::: selectedCameras ");
+    console.log(mode, "::::::::::::::: mode ");
+    setInitialized(true);
+  };
+
+  const handleReInitialize = () => {
+    console.log(selectedCameras, "::::::::::::::: selectedCameras ");
+    console.log(mode, "::::::::::::::: mode ");
+    setInitialized(false);
+  };
+
+  useEffect(() => {
+    getAllCameras();
+  }, []);
 
   return {
     capture,
     loading,
     error,
     response,
-    data
+    data,
+    cameras,
+    selectedCameras,
+    activeCamera,
+    mode,
+    initialized,
+    setMode,
+    toggleCameraSelection,
+    setSelectedCameras,
+    setActiveCamera,
+    handleCardClick,
+    handleInitialize,
+    handleReInitialize,
+    setInitialized,
   };
 };
 

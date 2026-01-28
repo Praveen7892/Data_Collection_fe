@@ -1,11 +1,13 @@
-const API_BASE = "http://127.0.0.1:5000/capture";
+const API_BASE = "http://127.0.0.1:5000";
+const CAPTURE = "capture";
+const CAMERAS = "camera";
 
 
 export const capture = async (data) => {
     console.log(data);
     const payload = data;
     try {
-        const res = await fetch(`${API_BASE}/click_capture`, {
+        const res = await fetch(`${API_BASE}/${CAPTURE}/click_capture`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -13,7 +15,7 @@ export const capture = async (data) => {
             body: JSON.stringify(payload),
         });
 
-        if (!res.ok) throw new Error("Failed to Add Plan");
+        if (!res.ok) throw new Error("Failed to capture thr image");
 
         const data = await res.json();
         return data;
@@ -27,14 +29,33 @@ export const capture = async (data) => {
 export const getCaptureImages = async () => {
      
     try {
-        const res = await fetch(`${API_BASE}/get_captured_images`, {
+        const res = await fetch(`${API_BASE}/${CAPTURE}/get_captured_images`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
             },
         });
 
-        if (!res.ok) throw new Error("Failed to Add Plan");
+        if (!res.ok) throw new Error("Failed to get Captured images");
+
+        const data = await res.json();
+        return data;
+    } catch (e) {
+        return e;
+    }
+};
+
+export const getCameras = async () => {
+     
+    try {
+        const res = await fetch(`${API_BASE}/${CAMERAS}/get_all_cameras`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!res.ok) throw new Error("Failed to get cameras");
 
         const data = await res.json();
         return data;

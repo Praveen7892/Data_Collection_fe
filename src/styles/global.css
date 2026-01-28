@@ -41,7 +41,6 @@
 
   --hardware-msg-bg: #dceaf8;
 
-
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -61,7 +60,16 @@
     color 0.5s ease;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0;
+  overflow-x: hidden;
+  font-family: system-ui, sans-serif;
   color: var(--color-text);
   line-height: 1.6;
   background: var(--color-bg);
@@ -72,6 +80,7 @@ body {
 
 .page {
   min-height: 100vh;
+  background-color: red;
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
@@ -94,45 +103,35 @@ body {
   min-height: calc(100vh - 100px);
 }
 
-.page-content-left {
-  display: flex;
-  flex: 3;
-  min-width: 300px;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-
-  transition:
-    background 0.5s ease,
-    color 0.5s ease;
-}
-
-.page-content-right {
-  display: flex;
-  min-width: 300px;
-  border-radius: var(--radius-md);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition:
-    background 0.5s ease,
-    color 0.5s ease;
-
-  padding: var(--space-md);
-}
-
 .header {
   height: var(--header-height);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  background: var(--color-bg);
+
+  /* Glass effect */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
   color: var(--color-text);
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
   transition:
     background 0.5s ease,
-    color 0.5s ease;
+    color 0.5s ease,
+    backdrop-filter 0.5s ease;
+
   width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
 
@@ -146,7 +145,6 @@ body {
   padding: 0;
 }
 
-/* Track */
 .switch-track {
   position: relative;
   width: 42px;
@@ -154,10 +152,11 @@ body {
   background: #020617;
   border-radius: 999px;
   border: 1px solid #1e293b;
-  transition: background 0.25s ease, border-color 0.25s ease;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
 }
 
-/* Thumb */
 .switch-thumb {
   position: absolute;
   top: 2px;
@@ -166,10 +165,11 @@ body {
   height: 18px;
   background: #e5e7eb;
   border-radius: 50%;
-  transition: transform 0.25s ease, background 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
 }
 
-/* Light mode */
 .theme-switch.light .switch-track {
   background: #e2e8f0;
   border-color: #cbd5f5;
@@ -180,12 +180,10 @@ body {
   background: #020617;
 }
 
-/* Icon */
 .switch-icon {
   font-size: 0.9rem;
   user-select: none;
 }
-
 
 .path-selector-browse-btn {
   background: linear-gradient(
@@ -274,115 +272,28 @@ body {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
-.hardware-msg{
+.hardware-msg {
   border: 1px solid #007bff;
-  padding: var(--space-md);
+  padding: var(--space-sm);
   text-align: center;
   border-radius: var(--radius-md);
-  /* color: var(--color-primary); */
   color: var(--color-text);
-
   font-weight: 600;
+  font-size: 14px;
   background-color: var(--hardware-msg-bg);
 }
-
-/* .camera-grid {
+.image-grid {
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 2fr));
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  grid-auto-rows: 350px;
   gap: 20px;
-  align-items: stretch;
   padding: 10px;
   box-sizing: border-box;
-} */
-
-/* .camera-card {
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e6edf5;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.04);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-  height: 100%;
-  cursor: pointer;
+  justify-content: start;
 }
 
-.camera-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.12);
-}
-
-.camera-preview {
-  flex: 1;
-  min-height: 180px;
-  background: linear-gradient(180deg, #f4f7fb 0%, #eef2f7 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.camera-icon {
-  font-size: 120px;
-  color: #9aa4b2;
-}
-
-.camera-footer {
-  flex-shrink: 0;
-  height: 60px;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid #e6edf5;
-  background: #fff;
-}
-
-.camera-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: #0f172a;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.camera-status {
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.camera-status.active {
-  background: #dcfce7;
-  color: #15803d;
-}
-
-.camera-status.inactive {
-  background: #f1f5f9;
-  color: #64748b;
-} */
-
-
-/* =====================
-   CAMERA GRID
-===================== */
-.camera-grid {
-  display: grid;
-  width: 100%;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  grid-auto-rows: 350px; 
-  gap: 20px; 
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.camera-card {
+.image-card {
   display: flex;
   flex-direction: column;
   background-color: #fff;
@@ -390,14 +301,15 @@ body {
   border: 1px solid #e6edf5;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   cursor: pointer;
-  height: 100%; /* Fills the grid row */
+  height: 100%;
 }
 
-
-.camera-preview {
-  height: 300px; /* FIXED PREVIEW HEIGHT */
+.image-preview {
+  height: 300px;
   width: 100%;
   background-color: #f4f7fb;
   display: flex;
@@ -406,21 +318,21 @@ body {
   overflow: hidden;
 }
 
-.camera-image {
+.image-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
+  background-color: #000000;
 }
 
-.camera-icon {
+.image-icon {
   font-size: 50px;
   color: #9aa4b2;
 }
 
-
-.camera-footer {
-  height: 60px; /* FIXED FOOTER HEIGHT */
+.image-footer {
+  height: 60px;
   padding: 10px 12px;
   display: flex;
   justify-content: space-between;
@@ -429,7 +341,7 @@ body {
   background-color: #fff;
 }
 
-.camera-name {
+.image-name {
   font-size: 14px;
   font-weight: 600;
   color: #0f172a;
@@ -438,7 +350,7 @@ body {
   text-overflow: ellipsis;
 }
 
-.camera-status {
+.image-status {
   font-size: 12px;
   padding: 4px 10px;
   border-radius: 999px;
@@ -447,81 +359,112 @@ body {
   white-space: nowrap;
 }
 
-.camera-status.active {
+.image-status.active {
   background-color: #d4edda;
   color: #155724;
 }
 
-.camera-status.inactive {
+.image-status.inactive {
   background-color: #f8d7da;
   color: #721c24;
 }
 
+.tab-buttons button {
+  flex: 1;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: 540;
+  font-size: 15px;
+  border-radius: 5px;
+  border: none;
+  width: 110px;
 
-/* Tablets */
+  transition:
+    background 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 200ms ease,
+    box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 200ms ease;
+}
+
+.tab-buttons button:hover {
+  transform: translateY(-1px);
+}
+
+.tab-buttons .active {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+  color: #ffffff;
+  box-shadow:
+    inset 0 0 0 1px #e5e7eb,
+    0 4px 10px rgba(0, 0, 0, 0.12);
+  transform: translateY(0);
+}
+
+
 @media (max-width: 1024px) {
-  .camera-grid {
+  .image-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-auto-rows: 220px;
     gap: 18px;
   }
 
-  .camera-preview {
+  .image-preview {
     height: 170px;
   }
 
-  .camera-footer {
+  .image-footer {
     height: 50px;
   }
 }
 
-/* Small Tablets / Large Phones */
 @media (max-width: 768px) {
-  .camera-grid {
+  .image-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     grid-auto-rows: 200px;
     gap: 16px;
   }
 
-  .camera-preview {
+  .image-preview {
     height: 150px;
   }
 
-  .camera-footer {
+  .image-footer {
     height: 50px;
   }
 
-  .camera-name {
+  .image-name {
     font-size: 13px;
   }
 
-  .camera-status {
+  .image-status {
     font-size: 11px;
     padding: 3px 8px;
   }
 }
 
-/* Phones */
 @media (max-width: 480px) {
-  .camera-grid {
+  .image-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     grid-auto-rows: 180px;
     gap: 12px;
   }
 
-  .camera-preview {
+  .image-preview {
     height: 130px;
   }
 
-  .camera-footer {
+  .image-footer {
     height: 50px;
   }
 
-  .camera-name {
+  .image-name {
     font-size: 12px;
   }
 
-  .camera-status {
+  .image-status {
     font-size: 10px;
     padding: 2px 6px;
   }
