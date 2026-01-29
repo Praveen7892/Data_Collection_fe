@@ -1,4 +1,3 @@
-import React from "react";
 import { Camera } from "lucide-react";
 import "./camera.css";
 
@@ -13,7 +12,12 @@ const CameraCardsGrid = ({
     <div className="camera-grid">
       {cameras?.map((cam) => {
         const isActive = activeCamera?.id === cam.id;
-        const selectedCam = selectedCameras.find((c) => c.id === cam.id);
+        const safeSelectedCameras = Array.isArray(selectedCameras)
+          ? selectedCameras
+          : [];
+
+        const selectedCam = safeSelectedCameras.find((c) => c.id === cam.id);
+
         const isChecked = !!selectedCam;
         const hasAOI = !!selectedCam?.aoi;
 
@@ -35,7 +39,9 @@ const CameraCardsGrid = ({
                   {selectedCam.aoi.width}px × {selectedCam.aoi.height}px
                 </span>
               ) : (
-                <span className="camera-resolution">{cam.height}px × {cam.width}px </span>
+                <span className="camera-resolution">
+                  {cam.height}px × {cam.width}px{" "}
+                </span>
               )}
             </div>
 
@@ -54,7 +60,7 @@ const CameraCardsGrid = ({
                 cam.serial_number ? "active" : "inactive"
               }`}
             >
-              { cam.serial_number ? "Active" : "Inactive"}
+              {cam.serial_number ? "Active" : "Inactive"}
             </span>
           </div>
         );

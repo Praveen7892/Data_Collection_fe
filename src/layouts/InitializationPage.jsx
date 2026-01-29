@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import CameraAOIPanel from "../components/CameraAOIPanel";
 import CameraCardsGrid from "../components/CameraCardsGrid";
 
@@ -13,7 +12,7 @@ const InitializationPage = ({
 }) => {
   const camerasWithId = cameras?.map((cam) => ({
     ...cam,
-    id: cam.serial_number,
+    id: cam?.serial_number,
   }));
 
   return (
@@ -32,13 +31,15 @@ const InitializationPage = ({
           camera={activeCamera}
           onSaveAOI={(aoi) => {
             setSelectedCameras((prev) => {
-              const exists = prev.find((cam) => cam.id === activeCamera.id);
+              const safePrev = Array.isArray(prev) ? prev : [];
+
+              const exists = safePrev.find((cam) => cam.id === activeCamera.id);
 
               if (!exists) {
-                return [...prev, { ...activeCamera, aoi }];
+                return [...safePrev, { ...activeCamera, aoi }];
               }
 
-              return prev.map((cam) =>
+              return safePrev.map((cam) =>
                 cam.id === activeCamera.id ? { ...cam, aoi } : cam,
               );
             });

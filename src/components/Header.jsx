@@ -12,6 +12,9 @@ const Header = ({
   capture,
   loading,
 }) => {
+
+  const Initialized = localStorage.getItem("initialized");
+
   return (
     <header className="header">
       <div
@@ -65,7 +68,7 @@ const Header = ({
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-        {!initialized ? (
+        {!Initialized ? (
           <>
             <div className="tab-buttons">
               <button
@@ -92,7 +95,7 @@ const Header = ({
           <>
            {mode === "SOFTWARE" && (
               <button
-                className="path-selector-browse-btn"
+                className="initialize-btn"
                 onClick={capture}
                 disabled={loading}
               >
@@ -107,7 +110,7 @@ const Header = ({
               </p>
             )}
 
-            <button className="path-selector-browse-btn" onClick={handleReInitialize}>
+            <button className="initialize-btn" onClick={handleReInitialize}>
               Re-Initialize
             </button>
           </>

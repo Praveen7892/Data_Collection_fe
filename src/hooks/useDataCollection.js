@@ -3,6 +3,7 @@ import {
   capture as captureAPI,
   getCaptureImages,
   getCameras,
+  Initialization,
 } from "../services/services";
 
 const useDataCollection = () => {
@@ -20,8 +21,9 @@ const useDataCollection = () => {
   const getAllCameras = async () => {
     try {
       const res = await getCameras();
-      // console.log(res);
+      console.log(res);
       setCameras(res.response);
+
     } catch (e) {
       return e;
     }
@@ -68,21 +70,61 @@ const useDataCollection = () => {
     }
   };
 
-  const handleInitialize = () => {
-    console.log(selectedCameras, "::::::::::::::: selectedCameras ");
-    console.log(mode, "::::::::::::::: mode ");
-    setInitialized(true);
+  const handleInitialize = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const payload = {
+        mode,
+        cameras: selectedCameras.map((cam) => ({
+          id: cam.id,
+          serial_number: cam.serial_number,
+          aoi: cam.aoi,
+        })),
+      };
+
+      console.log("Initialize payload:", payload);
+
+      await Initialization(payload);
+
+      setInitialized(true);
+      localStorage.setItem("initialized", true);
+    } catch (err) {
+      console.error("Initialization error:", err);
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReInitialize = () => {
     console.log(selectedCameras, "::::::::::::::: selectedCameras ");
     console.log(mode, "::::::::::::::: mode ");
     setInitialized(false);
+    // localStorage.setItem("initialized", false);
+    localStorage.removeItem("initialized");
+
   };
+
+  useEffect(() => {
+    if (!Array.isArray(selectedCameras)) {
+      console.error("selectedCameras corrupted:", selectedCameras);
+    }
+  }, [selectedCameras]);
 
   useEffect(() => {
     getAllCameras();
   }, []);
+
+  useEffect(() => {
+    console.log(
+      "selectedCameras:",
+      selectedCameras,
+      "isArray:",
+      Array.isArray(selectedCameras),
+    );
+  }, [selectedCameras]);
 
   return {
     capture,

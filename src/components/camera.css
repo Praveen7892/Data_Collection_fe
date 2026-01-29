@@ -15,6 +15,16 @@
   transition: background 0.2s ease;
 }
 
+.initialize-btn:hover {
+ transform: translateY(-2px);
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary),
+    var(--color-primary)
+  );
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
 .camera-layout {
   display: grid;
   grid-template-columns: 1fr;
