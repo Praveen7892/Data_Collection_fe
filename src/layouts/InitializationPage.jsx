@@ -7,6 +7,7 @@ const InitializationPage = ({
   selectedCameras,
   setSelectedCameras,
   cameras,
+  runningCameras,
   toggleCameraSelection,
   handleCardClick,
 }) => {
@@ -20,6 +21,7 @@ const InitializationPage = ({
       <h3>Available Devices</h3>
       <CameraCardsGrid
         cameras={camerasWithId}
+        runningCameras={runningCameras}
         activeCamera={activeCamera}
         selectedCameras={selectedCameras}
         onCardClick={handleCardClick}

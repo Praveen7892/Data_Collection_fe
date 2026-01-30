@@ -4,6 +4,7 @@ import {
   getCaptureImages,
   getCameras,
   Initialization,
+  getRunningCameras,
 } from "../services/services";
 
 const useDataCollection = () => {
@@ -12,6 +13,8 @@ const useDataCollection = () => {
   const [response, setResponse] = useState(null);
   const [data, setData] = useState(null);
   const [cameras, setCameras] = useState(null);
+  const [runningCameras, setRunningCameras] = useState(null);
+
 
   const [activeCamera, setActiveCamera] = useState(null);
   const [selectedCameras, setSelectedCameras] = useState([]);
@@ -23,7 +26,16 @@ const useDataCollection = () => {
       const res = await getCameras();
       console.log(res);
       setCameras(res.response);
+    } catch (e) {
+      return e;
+    }
+  };
 
+  const getAllRunningCameras = async () => {
+    try {
+      const res = await getRunningCameras();
+      console.log(res);
+      setRunningCameras(res.response);
     } catch (e) {
       return e;
     }
@@ -34,14 +46,17 @@ const useDataCollection = () => {
     setError(null);
 
     try {
-      const res = await captureAPI({ capture: true });
+      await captureAPI({ capture: true });
       const captureData = await getCaptureImages();
 
-      setData({
+      const formatted = {
         message: captureData.message ?? "captured",
         response: captureData.response ?? { captured_images: [] },
         status_code: captureData.status_code ?? 200,
-      });
+      };
+
+      setData(formatted);
+      localStorage.setItem("lastCapture", JSON.stringify(formatted));
     } catch (err) {
       console.error("Error happened:", err);
       setError(err);
@@ -99,12 +114,17 @@ const useDataCollection = () => {
   };
 
   const handleReInitialize = () => {
-    console.log(selectedCameras, "::::::::::::::: selectedCameras ");
-    console.log(mode, "::::::::::::::: mode ");
     setInitialized(false);
-    // localStorage.setItem("initialized", false);
-    localStorage.removeItem("initialized");
+    setSelectedCameras([]);
+    setActiveCamera(null);
+    setData(null);
 
+    getAllCameras();
+    getAllRunningCameras();
+
+    localStorage.removeItem("initialized");
+    localStorage.removeItem("selectedCameras");
+    localStorage.removeItem("lastCapture");
   };
 
   useEffect(() => {
@@ -115,28 +135,52 @@ const useDataCollection = () => {
 
   useEffect(() => {
     getAllCameras();
+    getAllRunningCameras();
+
   }, []);
 
   useEffect(() => {
-    console.log(
-      "selectedCameras:",
-      selectedCameras,
-      "isArray:",
-      Array.isArray(selectedCameras),
-    );
+    localStorage.setItem("selectedCameras", JSON.stringify(selectedCameras));
   }, [selectedCameras]);
 
+  useEffect(() => {
+    const savedInit = localStorage.getItem("initialized");
+    const savedCameras = localStorage.getItem("selectedCameras");
+    const savedCapture = localStorage.getItem("lastCapture");
+
+    if (savedInit === "true") {
+      setInitialized(true);
+    }
+
+    if (savedCameras) {
+      try {
+        setSelectedCameras(JSON.parse(savedCameras));
+      } catch (e) {
+        console.error("Failed to parse selectedCameras");
+      }
+    }
+
+    if (savedCapture) {
+      try {
+        setData(JSON.parse(savedCapture));
+      } catch (e) {
+        console.error("Failed to parse lastCapture");
+      }
+    }
+  }, []);
+
   return {
-    capture,
     loading,
     error,
     response,
     data,
     cameras,
+    runningCameras,
     selectedCameras,
     activeCamera,
     mode,
     initialized,
+    capture,
     setMode,
     toggleCameraSelection,
     setSelectedCameras,

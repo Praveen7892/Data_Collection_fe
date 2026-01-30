@@ -59,6 +59,25 @@ export const getCameras = async () => {
   }
 };
 
+
+export const getRunningCameras = async () => {
+  try {
+    const res = await fetch(`${API_BASE}/${CAMERA}/running_cameras`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) throw new Error("Failed to get running cameras");
+
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    return e;
+  }
+};
+
 export const Initialization = async (data) => {
   const payload = data;
 

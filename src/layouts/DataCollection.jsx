@@ -27,6 +27,7 @@ const DataCollection = ({ toggleTheme, theme }) => {
       {!Initialized ? (
         <InitializationPage
           activeCamera={dataCollection.activeCamera}
+          runningCameras={dataCollection.runningCameras}
           setActiveCamera={dataCollection.setActiveCamera}
           selectedCameras={dataCollection.selectedCameras}
           // setSelectedCameras={dataCollection.setActiveCamera}
