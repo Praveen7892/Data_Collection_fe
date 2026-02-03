@@ -47,7 +47,23 @@ const InitializationPage = ({
             selectedCameras={selectedCameras}
             onCardClick={handleCardClick}
             onCheckboxClick={toggleCameraSelection}
-            // onSaveAOI={}
+                        onSaveAOI={(aoi) => {
+              setSelectedCameras((prev) => {
+                const safePrev = Array.isArray(prev) ? prev : [];
+
+                const exists = safePrev.find((cam) => cam.id === activeCamera.id);
+
+                if (!exists) {
+                  return [...safePrev, { ...activeCamera, aoi }];
+                }
+
+                return safePrev.map((cam) =>
+                  cam.id === activeCamera.id ? { ...cam, aoi } : cam,
+                );
+              });
+
+              setActiveCamera((prev) => ({ ...prev, aoi }));
+            }}
           />
         </div>
 
