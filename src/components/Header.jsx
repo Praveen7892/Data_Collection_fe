@@ -68,53 +68,23 @@ const Header = ({
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-        {!Initialized ? (
-          <>
-            <div className="tab-buttons">
-              <button
-                type="button"
-                className={mode === "SOFTWARE" ? "active" : ""}
-                onClick={() => setMode("SOFTWARE")}
-              >
-                Software
-              </button>
-              <button
-                type="button"
-                className={mode === "HARDWARE" ? "active" : ""}
-                onClick={() => setMode("HARDWARE")}
-              >
-                Hardware
-              </button>
-            </div>
+      
+               {mode === "SOFTWARE" && (
+                <button
+                  className="initialize-btn"
+                  onClick={capture}
+                  disabled={loading}
+                >
+                  {loading ? "Capturing..." : "Capture"}
+                </button>
+              )}
 
-            <button className="initialize-btn" onClick={handleInitialize}>
-              Initialize
-            </button>
-          </>
-        ) : (
-          <>
-           {mode === "SOFTWARE" && (
-              <button
-                className="initialize-btn"
-                onClick={capture}
-                disabled={loading}
-              >
-                {loading ? "Capturing..." : "Capture"}
-              </button>
-            )}
-
-            {mode === "HARDWARE" && (
-              <p className="hardware-msg">
-                Hardware Trigger Enabled - Cameras capture on external
-                signal
-              </p>
-            )}
-
-            <button className="initialize-btn" onClick={handleReInitialize}>
-              Re-Initialize
-            </button>
-          </>
-        )}
+              {mode === "HARDWARE" && (
+                <p className="hardware-msg">
+                  Hardware Trigger Enabled - Cameras capture on external signal
+                </p>
+              )}
+              
         <button
           className={`theme-switch ${theme}`}
           onClick={toggleTheme}

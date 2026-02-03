@@ -50,7 +50,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: var(--font-sans);
 }
 
 :root,
@@ -68,25 +67,22 @@
 
 body {
   margin: 0;
-  overflow-x: hidden;
-  font-family: system-ui, sans-serif;
+  overflow: hidden;
+  font-family: var(--font-sans);
+
   color: var(--color-text);
   line-height: 1.6;
   background: var(--color-bg);
-  /* background: #f4f7fb; */
   transition:
     background 0.5s ease,
     color 0.5s ease;
 }
 
 .page {
-  min-height: 100vh;
-  background-color: red;
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
-  align-items: center;
-  justify-content: flex-start;
+  height: 100vh; 
+  overflow: hidden; 
   font-size: 1rem;
   background: var(--color-bg);
   color: var(--color-text);
@@ -98,10 +94,29 @@ body {
 .page-content {
   display: flex;
   gap: 10px;
-  width: 100%;
-  flex-wrap: wrap;
+  flex: 1;
+  flex-wrap: nowrap;
   padding: var(--space-sm);
-  min-height: calc(100vh - 100px);
+  margin-top: var(--header-height, 90px);
+  overflow: hidden;
+}
+
+.page-content-left {
+  flex: 1; 
+  max-height: 100%; 
+  background-color: #f4f7fb;
+  border: 1px solid rgb(233, 232, 232);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden; 
+}
+
+.page-content-right {
+  flex: 4; 
+  max-height: 100%; 
+  padding: var(--space-sm);
+  overflow: auto; 
 }
 
 .header {
@@ -117,7 +132,6 @@ body {
 
   color: var(--color-text);
   padding: var(--space-sm) var(--space-md);
-  /* border-radius: var(--radius-md); */
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -361,7 +375,6 @@ body {
   padding: 4px 10px;
   border-radius: 999px;
   font-weight: 600;
-  text-transform: uppercase;
   white-space: nowrap;
 }
 
@@ -390,11 +403,11 @@ body {
 }
 
 .image-status.active::before {
-  background-color: #155724; /* green */
+  background-color: #155724; 
 }
 
 .image-status.inactive::before {
-  background-color: #721c24; /* red */
+  background-color: #721c24; 
 }
 
 .tab-buttons button {

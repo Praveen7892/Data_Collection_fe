@@ -1,5 +1,259 @@
+
+.camera-layout {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  padding: 12px;
+  align-content: start;
+}
+
+.config-layout {
+
+  padding: 12px;
+  gap: 16px;
+  width: 100%;
+
+}
+
+.camera-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-md);
+}
+
+.camera-card {
+  background: var(--color-text-light);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  cursor: pointer;
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.camera-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.camera-card.active {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+}
+
+.camera-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.camera-icon {
+  color: var(--color-primary);
+}
+
+.camera-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.camera-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.camera-resolution {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.camera-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+}
+
+.camera-checkbox.checked {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+
+.camera-status-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-sm);
+}
+
+.camera-status {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+}
+
+.camera-status.active {
+  background: #ecfdf5;
+  color: var(--color-text-success);
+  font-weight: 600;
+}
+
+.camera-status.inactive {
+  background: #f3f4f6;
+  color: var(--color-text-muted);
+  font-weight: 600;
+
+}
+
+.camera-status.running {
+  background: #eff6ff;
+  color: var(--color-primary);
+  font-weight: 600;
+
+}
+
+.camera-status.notrunning {
+  background: #f3f4f6;
+  color: var(--color-text-muted);
+  font-weight: 600;
+
+}
+
+.camera-aoi {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: #f9fafb;
+  border-radius: var(--radius-md);
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  animation: aoiExpand 0.2s ease-out;
+}
+
+@keyframes aoiExpand {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.aoi-field {
+  display: grid;
+  grid-template-columns: 50px 1fr auto;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.aoi-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.aoi-field input[type="range"] {
+  appearance: none;
+  height: 4px;
+  background: #d1d5db;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.aoi-field input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--color-primary);
+  border-radius: 50%;
+}
+
+.aoi-field span {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  min-width: 60px;
+  text-align: right;
+}
+
+.aoi-field input[type="number"] {
+  grid-column: 2 / 4;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  color: var(--color-text);
+  font-size: 13px;
+}
+
+.aoi-field input[type="number"]:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.save-aoi-btn {
+  align-self: flex-end;
+  background: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.save-aoi-btn:hover {
+  background: #0056d2;
+  box-shadow: var(--shadow-sm);
+}
+
+.bottom-controls {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  /* background: #ffffff; */
+}
+
+/* Tab buttons */
+.tab-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.tab-buttons button {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tab-buttons button.active {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+
 .initialize-btn {
-  width: 150px;
   padding: 10px;
   border-radius: 10px;
   border: none;
@@ -12,7 +266,7 @@
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .initialize-btn:hover {
@@ -25,262 +279,8 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-.camera-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  width: 100%;
-  padding: 16px 20px;
-  margin-top: 80px;
-}
-
-.camera-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 14px;
-}
-
-.camera-card {
-  background: #fff;
-  padding: 14px;
-  border-radius: 14px;
-  border: 1px solid #e6edf5;
-  cursor: pointer;
-  height: 120px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-rows: auto auto;
-  gap: 8px 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.25s ease;
-}
-
-.camera-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-}
-
-.camera-card.active {
-  border: 2px solid #3b82f6;
-}
-
-.camera-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: #eef2ff;
-  color: #3b82f6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  grid-row: span 2;
-}
-
-.camera-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.camera-name {
-  font-size: 17px;
-  font-weight: 600;
-  color: #0f172a;
-}
-
-.camera-resolution {
+/* Hardware message */
+.hardware-msg {
   font-size: 13px;
-  color: #64748b;
-}
-
-.camera-status {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  font-size: 11px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-weight: 600;
-  width: fit-content;
-}
-
-.camera-status.active {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.camera-status.inactive {
-  background-color: #f3f4f6;
-  color: #6b6b6b;
-}
-
-.camera-status::before {
-  content: "";
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.camera-status.active::before {
-  background-color: #155724; /* green */
-}
-
-.camera-status.inactive::before {
-  background-color: #721c24; /* red */
-}
-
-.camera-status.running::before {
-  background-color: #155724; /* green */
-}
-
-.camera-status.notrunning::before {
-  background-color: #6b6b6b; /* red */
-}
-.camera-running-label {
-  font-weight: 600;
-  margin-left: 6px;
-  font-size: 12px;
-}
-
-.camera-status.running {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.camera-status.notrunning {
-  background-color: #f3f4f6;
-  color: #6b6b6b;
-}
-
-
-.camera-checkbox {
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  border: 2px solid #cbd5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.camera-checkbox span {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  background: transparent;
-  transition: all 0.2s ease;
-}
-
-.camera-checkbox.checked {
-  border-color: #3b82f6;
-  background: #3b82f6;
-}
-
-.camera-checkbox.checked span {
-  background: #fff;
-}
-
-.aoi-panel {
-  position: fixed;
-  right: 0;
-  top: 90px;
-  height: calc(100vh - 100px);
-  width: 360px;
-  background: #ffffff;
-  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.08);
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  z-index: 100;
-}
-
-.aoi-panel.open {
-  transform: translateX(0);
-}
-
-.aoi-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.aoi-header h3 {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.icon-btn {
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.aoi-controls {
-  padding: 20px;
-  display: grid;
-  gap: 16px;
-}
-
-.aoi-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.aoi-field label {
-  font-size: 13px;
-  /* color: #666; */
-  font-weight: 600;
-}
-
-.aoi-field span {
-  font-size: 13px;
-  color: #333;
-}
-
-.aoi-field input[type="range"] {
-  accent-color: #007bff;
-}
-
-.aoi-field input[type="number"] {
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 14px;
-}
-
-.aoi-footer {
-  margin-top: auto;
-  padding: 16px 20px;
-  border-top: 1px solid #eee;
-}
-
-.save-aoi-btn {
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary),
-    var(--color-secondary)
-  );
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.save-aoi-btn:hover {
-  background: linear-gradient(
-    135deg,
-    var(--color-secondary),
-    var(--color-primary)
-  );
+  color: var(--color-text-muted);
 }

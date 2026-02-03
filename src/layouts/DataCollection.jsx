@@ -22,28 +22,36 @@ const DataCollection = ({ toggleTheme, theme }) => {
         capture={dataCollection.capture}
         loading={dataCollection.loading}
       />
+      <div className="page-content">
+        <div className="page-content-left">
+          <InitializationPage
+            activeCamera={dataCollection.activeCamera}
+            runningCameras={dataCollection.runningCameras}
+            setActiveCamera={dataCollection.setActiveCamera}
+            selectedCameras={dataCollection.selectedCameras}
+            setSelectedCameras={dataCollection.setSelectedCameras}
+            cameras={dataCollection.cameras}
+            toggleCameraSelection={dataCollection.toggleCameraSelection}
+            handleCardClick={dataCollection.handleCardClick}
+            mode={dataCollection.mode}
+            setMode={dataCollection.setMode}
+            handleInitialize={dataCollection.handleInitialize}
+            handleReInitialize={dataCollection.handleReInitialize}
+            initialized={dataCollection.initialized}
+            capture={dataCollection.capture}
+            loading={dataCollection.loading}
+          />
+        </div>
+        <div className="page-content-right">
+          <CapturePage
+            data={dataCollection.data}
+            capture={dataCollection.capture}
+            loading={dataCollection.loading}
+            error={dataCollection.error}
+          />
+        </div>
 
-      {/* {!dataCollection.initialized ? ( */}
-      {!Initialized ? (
-        <InitializationPage
-          activeCamera={dataCollection.activeCamera}
-          runningCameras={dataCollection.runningCameras}
-          setActiveCamera={dataCollection.setActiveCamera}
-          selectedCameras={dataCollection.selectedCameras}
-          // setSelectedCameras={dataCollection.setActiveCamera}
-          setSelectedCameras={dataCollection.setSelectedCameras}
-          cameras={dataCollection.cameras}
-          toggleCameraSelection={dataCollection.toggleCameraSelection}
-          handleCardClick={dataCollection.handleCardClick}
-        />
-      ) : (
-        <CapturePage
-          data={dataCollection.data}
-          capture={dataCollection.capture}
-          loading={dataCollection.loading}
-          error={dataCollection.error}
-        />
-      )}
+      </div>
     </div>
   );
 };

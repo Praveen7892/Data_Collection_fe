@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Camera } from "lucide-react";
 
 const CapturePage = (data,) => {
-  const MAX_CAMERAS = 6;
+  const MAX_CAMERAS = 12;
 
 
   console.log(data, "::::::::::::::::data")

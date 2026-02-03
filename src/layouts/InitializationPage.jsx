@@ -1,4 +1,4 @@
-import CameraAOIPanel from "../components/CameraAOIPanel";
+// import CameraAOIPanel from "../components/CameraAOIPanel";
 import CameraCardsGrid from "../components/CameraCardsGrid";
 
 const InitializationPage = ({
@@ -10,47 +10,70 @@ const InitializationPage = ({
   runningCameras,
   toggleCameraSelection,
   handleCardClick,
+
+  mode,
+  setMode,
+  handleInitialize,
+  handleReInitialize,
+  initialized,
+  capture,
+  loading,
 }) => {
   const camerasWithId = cameras?.map((cam) => ({
     ...cam,
     id: cam?.serial_number,
   }));
 
+  const Initialized = localStorage.getItem("initialized");
+
   return (
-    <div className="camera-layout">
+    <div
+      className="config-layout"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "86vh",
+      }}
+    >
       <h3>Available Devices</h3>
-      <CameraCardsGrid
-        cameras={camerasWithId}
-        runningCameras={runningCameras}
-        activeCamera={activeCamera}
-        selectedCameras={selectedCameras}
-        onCardClick={handleCardClick}
-        onCheckboxClick={toggleCameraSelection}
-      />
 
-      {activeCamera && (
-        <CameraAOIPanel
-          camera={activeCamera}
-          onSaveAOI={(aoi) => {
-            setSelectedCameras((prev) => {
-              const safePrev = Array.isArray(prev) ? prev : [];
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        {/* Top section takes remaining space */}
+        <div style={{ flex: 1, overflowY: "auto" }}>
+          <CameraCardsGrid
+            cameras={camerasWithId}
+            runningCameras={runningCameras}
+            activeCamera={activeCamera}
+            selectedCameras={selectedCameras}
+            onCardClick={handleCardClick}
+            onCheckboxClick={toggleCameraSelection}
+          />
+        </div>
 
-              const exists = safePrev.find((cam) => cam.id === activeCamera.id);
+        {/* Bottom section sticks at bottom */}
+        <div className="bottom-controls">
+          <div className="tab-buttons">
+            <button
+              type="button"
+              className={mode === "SOFTWARE" ? "active" : ""}
+              onClick={() => setMode("SOFTWARE")}
+            >
+              Software
+            </button>
+            <button
+              type="button"
+              className={mode === "HARDWARE" ? "active" : ""}
+              onClick={() => setMode("HARDWARE")}
+            >
+              Hardware
+            </button>
+          </div>
 
-              if (!exists) {
-                return [...safePrev, { ...activeCamera, aoi }];
-              }
-
-              return safePrev.map((cam) =>
-                cam.id === activeCamera.id ? { ...cam, aoi } : cam,
-              );
-            });
-
-            setActiveCamera((prev) => ({ ...prev, aoi }));
-          }}
-          onClose={() => setActiveCamera(null)}
-        />
-      )}
+          <button className="initialize-btn" onClick={handleInitialize}>
+            Initialize
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

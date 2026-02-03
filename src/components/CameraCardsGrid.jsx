@@ -1,80 +1,6 @@
-// import { Camera } from "lucide-react";
-// import "./camera.css";
-
-// const CameraCardsGrid = ({
-//   cameras,
-//   activeCamera,
-//   selectedCameras,
-//   onCardClick,
-//   onCheckboxClick,
-//   runningCameras,
-// }) => {
-
-//   return (
-
-//     <div className="camera-grid">
-//       {cameras?.map((cam) => {
-//         const isActive = activeCamera?.id === cam.id;
-//         const safeSelectedCameras = Array.isArray(selectedCameras)
-//           ? selectedCameras
-//           : [];
-
-//         const selectedCam = safeSelectedCameras.find((c) => c.id === cam.id);
-
-//         const isChecked = !!selectedCam;
-//         const hasAOI = !!selectedCam?.aoi;
-
-//         return (
-//           <div
-//             key={cam.id}
-//             className={`camera-card ${isActive ? "active" : ""}`}
-//             onClick={() => onCardClick(cam)}
-//           >
-//             <div className="camera-icon">
-//               <Camera size={20} />
-//             </div>
-
-//             <div className="camera-info">
-//               <span className="camera-name">{cam.serial_number} ###- {runningCameras.serial_number}</span>
-
-//               {hasAOI ? (
-//                 <span className="camera-resolution">
-//                   {selectedCam.aoi.width}px × {selectedCam.aoi.height}px
-//                 </span>
-//               ) : (
-//                 <span className="camera-resolution">
-//                   {cam.height}px × {cam.width}px{" "}
-//                 </span>
-//               )}
-//             </div>
-
-//             <div
-//               className={`camera-checkbox ${isChecked ? "checked" : ""}`}
-//               onClick={(e) => {
-//                 e.stopPropagation();
-//                 onCheckboxClick(cam);
-//               }}
-//             >
-//               <span />
-//             </div>
-
-//             <span
-//               className={`camera-status ${
-//                 cam.serial_number ? "active" : "inactive"
-//               }`}
-//             >
-//               {cam.serial_number ? "Active" : "Inactive"}
-//             </span>
-//           </div>
-//         );
-//       })}
-//     </div>
-//   );
-// };
-
-// export default CameraCardsGrid;
-
 import { Camera } from "lucide-react";
+import { useState } from "react";
+import CameraAOIInline from "./CameraAOIInline";
 import "./camera.css";
 
 const CameraCardsGrid = ({
@@ -84,62 +10,70 @@ const CameraCardsGrid = ({
   onCardClick,
   onCheckboxClick,
   runningCameras,
+  onSaveAOI,
 }) => {
-  // Extract running camera serial numbers
+  const [openAOICameraId, setOpenAOICameraId] = useState(null);
+
   const runningSerials = Array.isArray(runningCameras?.camera_details)
     ? runningCameras.camera_details.map((c) => c.serial_number)
     : [];
 
+  const safeSelectedCameras = Array.isArray(selectedCameras)
+    ? selectedCameras
+    : [];
+
+  const handleCardClick = (cam) => {
+    onCardClick(cam);
+    setOpenAOICameraId((prev) => (prev === cam.id ? null : cam.id));
+  };
+
   return (
     <div className="camera-grid">
       {cameras?.map((cam) => {
-        const isActive = activeCamera?.id === cam.id;
-        const safeSelectedCameras = Array.isArray(selectedCameras)
-          ? selectedCameras
-          : [];
-
-        const selectedCam = safeSelectedCameras.find((c) => c.id === cam.id);
+        const selectedCam = safeSelectedCameras.find(
+          (c) => c.id === cam.id
+        );
 
         const isChecked = !!selectedCam;
-        const hasAOI = !!selectedCam?.aoi;
-
-        // Check if camera is currently running
         const isRunning = runningSerials.includes(cam.serial_number);
+        const isAOIOpen = openAOICameraId === cam.id;
 
         return (
           <div
             key={cam.id}
-            className={`camera-card ${isActive ? "active" : ""}`}
-            onClick={() => onCardClick(cam)}
+            className={`camera-card ${
+              activeCamera?.id === cam.id ? "active" : ""
+            }`}
+            onClick={() => handleCardClick(cam)}
           >
-            <div className="camera-icon">
-              <Camera size={20} />
-            </div>
+            {/* HEADER */}
+            <div className="camera-header">
+              <div className="camera-icon">
+                <Camera size={20} />
+              </div>
 
-            <div className="camera-info">
-              <span className="camera-name">{cam.serial_number}</span>
-
-              {hasAOI ? (
+              <div className="camera-info">
+                <span className="camera-name">{cam.serial_number}</span>
                 <span className="camera-resolution">
-                  {selectedCam.aoi.width}px × {selectedCam.aoi.height}px
+                  {cam.height}px × {cam.width}px
                 </span>
-              ) : (
-                <span className="camera-resolution">
-                  {cam.height}px × {cam.width}px{" "}
-                </span>
-              )}
+              </div>
+
+              <div
+                className={`camera-checkbox ${
+                  isChecked ? "checked" : ""
+                }`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onCheckboxClick(cam);
+                }}
+              >
+                <span />
+              </div>
             </div>
 
-            <div
-              className={`camera-checkbox ${isChecked ? "checked" : ""}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                onCheckboxClick(cam);
-              }}
-            >
-              <span />
-            </div>
-            <div style={{display:"flex",justifyContent:"flex-end", gap:"15px"}}>
+            {/* STATUS */}
+            <div className="camera-status-row">
               <span
                 className={`camera-status ${
                   cam.serial_number ? "active" : "inactive"
@@ -149,11 +83,21 @@ const CameraCardsGrid = ({
               </span>
 
               <span
-                className={`camera-status ${isRunning ? "running" : "notrunning"}`}
+                className={`camera-status ${
+                  isRunning ? "running" : "notrunning"
+                }`}
               >
                 {isRunning ? "Online" : "Offline"}
               </span>
             </div>
+
+            {/* AOI */}
+            {isAOIOpen && (
+              <CameraAOIInline
+                camera={selectedCam || cam}
+                onSave={(aoi) => onSaveAOI(cam.id, aoi)}
+              />
+            )}
           </div>
         );
       })}
