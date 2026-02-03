@@ -1,5 +1,6 @@
 // import CameraAOIPanel from "../components/CameraAOIPanel";
 import CameraCardsGrid from "../components/CameraCardsGrid";
+import { Network } from "lucide-react";
 
 const InitializationPage = ({
   activeCamera,
@@ -32,10 +33,10 @@ const InitializationPage = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        height: "86vh",
+        height:"100%"
       }}
     >
-      <h3>Available Devices</h3>
+      <h3 style={{display:"flex" , alignItems:"center", gap:"10px", borderBottom:"1px solid var(--color-border)", padding:"var(--space-sm) 0"}}> <Network size={20} />Available Devices</h3>
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {/* Top section takes remaining space */}
