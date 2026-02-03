@@ -15,7 +15,6 @@ const useDataCollection = () => {
   const [cameras, setCameras] = useState(null);
   const [runningCameras, setRunningCameras] = useState(null);
 
-
   const [activeCamera, setActiveCamera] = useState(null);
   const [selectedCameras, setSelectedCameras] = useState([]);
   const [mode, setMode] = useState("SOFTWARE");
@@ -35,7 +34,11 @@ const useDataCollection = () => {
     try {
       const res = await getRunningCameras();
       console.log(res);
-      setRunningCameras(res.response);
+      // setRunningCameras(res.response);
+      setRunningCameras((prev) => ({
+        ...prev,
+        ...res.response,
+      }));
     } catch (e) {
       return e;
     }
@@ -110,6 +113,8 @@ const useDataCollection = () => {
       setError(err);
     } finally {
       setLoading(false);
+      getAllCameras();
+      getAllRunningCameras();
     }
   };
 
@@ -136,7 +141,6 @@ const useDataCollection = () => {
   useEffect(() => {
     getAllCameras();
     getAllRunningCameras();
-
   }, []);
 
   useEffect(() => {

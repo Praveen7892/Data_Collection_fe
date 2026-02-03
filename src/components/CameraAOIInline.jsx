@@ -4,8 +4,8 @@ const CameraAOIInline = ({ camera, onSave }) => {
   const [aoi, setAoi] = useState({
     height: camera.aoi?.height ?? camera.height,
     width: camera.aoi?.width ?? camera.width,
-    offsetX: camera.aoi?.offsetX ?? 0,
-    offsetY: camera.aoi?.offsetY ?? 0,
+    offsetX: camera.aoi?.offset_x ?? camera.offset_x,
+    offsetY: camera.aoi?.offset_y ?? camera.offset_y,
   });
 
   return (

@@ -1,4 +1,3 @@
-// import CameraAOIPanel from "../components/CameraAOIPanel";
 import CameraCardsGrid from "../components/CameraCardsGrid";
 import { Network } from "lucide-react";
 
@@ -39,7 +38,7 @@ const InitializationPage = ({
       <h3 style={{display:"flex" , alignItems:"center", gap:"10px", borderBottom:"1px solid var(--color-border)", padding:"var(--space-sm) 0"}}> <Network size={20} />Available Devices</h3>
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        {/* Top section takes remaining space */}
+
         <div style={{ flex: 1, overflowY: "auto" }}>
           <CameraCardsGrid
             cameras={camerasWithId}
@@ -48,6 +47,7 @@ const InitializationPage = ({
             selectedCameras={selectedCameras}
             onCardClick={handleCardClick}
             onCheckboxClick={toggleCameraSelection}
+            // onSaveAOI={}
           />
         </div>
 
