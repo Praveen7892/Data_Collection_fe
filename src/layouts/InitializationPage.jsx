@@ -34,13 +34,24 @@ const InitializationPage = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        height:"100%"
+        height: "100%",
       }}
     >
-      <h3 style={{display:"flex" , alignItems:"center", gap:"10px", borderBottom:"1px solid var(--color-border)", padding:"var(--space-sm) 0"}}> <Network size={20} />Available Devices</h3>
+      <h3
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          borderBottom: "1px solid var(--color-border)",
+          padding: "var(--space-sm) 0",
+        }}
+      >
+        {" "}
+        <Network size={20} />
+        Available Devices
+      </h3>
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-
         <div style={{ flex: 1, overflowY: "auto" }}>
           <CameraCardsGrid
             cameras={camerasWithId}
@@ -49,7 +60,7 @@ const InitializationPage = ({
             selectedCameras={selectedCameras}
             onCardClick={handleCardClick}
             onCheckboxClick={toggleCameraSelection}
-                        onSaveAOI={handleSaveAOI}
+            onSaveAOI={handleSaveAOI}
           />
         </div>
 
@@ -72,7 +83,7 @@ const InitializationPage = ({
             </button>
           </div>
 
-          <button className="initialize-btn" onClick={handleInitialize}>
+          <button className="initialize-btn" onClick={handleInitialize}   disabled={!selectedCameras}>
             Initialize
           </button>
         </div>

@@ -40,6 +40,7 @@ const DataCollection = ({ toggleTheme, theme }) => {
             initialized={dataCollection.initialized}
             capture={dataCollection.capture}
             loading={dataCollection.loading}
+            handleSaveAOI={dataCollection.handleSaveAOI}
           />
         </div>
         <div className="page-content-right">

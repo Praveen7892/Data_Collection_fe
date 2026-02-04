@@ -74,7 +74,8 @@ const useDataCollection = () => {
       if (exists) {
         return prev.filter((c) => c.id !== camera.id);
       }
-      return [...prev, { ...camera, aoi: null }];
+      // return [...prev, { ...camera, aoi: null }];
+      return [...prev, { ...camera }];
     });
   };
 
@@ -82,7 +83,7 @@ const useDataCollection = () => {
     const selectedCam = selectedCameras.find((c) => c.id === camera.id);
 
     if (!selectedCam) {
-      setActiveCamera({ ...camera, aoi: null });
+      setActiveCamera({ ...camera });
     } else {
       setActiveCamera({ ...selectedCam });
     }
@@ -93,13 +94,38 @@ const useDataCollection = () => {
       setLoading(true);
       setError(null);
 
+      // const payload = {
+      //   mode,
+      //   cameras: selectedCameras.map((cam) => ({
+      //     id: cam.id,
+      //     serial_number: cam.serial_number,
+      //     aoi: cam.aoi,
+      //   })),
+      // };
+
       const payload = {
         mode,
-        cameras: selectedCameras.map((cam) => ({
-          id: cam.id,
-          serial_number: cam.serial_number,
-          aoi: cam.aoi,
-        })),
+        cameras: selectedCameras.map((cam) => {
+          const defaultAOI = {
+            height: cam.height,
+            width: cam.width,
+            offset_x: cam.offset_x ?? 0,
+            offset_y: cam.offset_y ?? 0,
+          };
+
+          return {
+            id: cam.id,
+            serial_number: cam.serial_number,
+            aoi: cam.aoi
+              ? {
+                  height: cam.aoi.height,
+                  width: cam.aoi.width,
+                  offset_x: cam.aoi.offsetX,
+                  offset_y: cam.aoi.offsetY,
+                }
+              : defaultAOI,
+          };
+        }),
       };
 
       console.log("Initialize payload:", payload);
@@ -118,28 +144,41 @@ const useDataCollection = () => {
     }
   };
 
+  //   const handleSaveAOI = (cameraId, aoi) => {
+  //   setSelectedCameras(prev => {
+  //     const safePrev = Array.isArray(prev) ? prev : [];
+  //     const exists = safePrev.find(cam => cam.id === cameraId);
+
+  //     if (!exists) {
+  //       const cam = cameras.find(c => c.id === cameraId);
+  //       return [...safePrev, { ...cam, aoi }];
+  //     }
+
+  //     return safePrev.map(cam =>
+  //       cam.id === cameraId ? { ...cam, aoi } : cam
+  //     );
+  //   });
+
+  //   setActiveCamera(prev =>
+  //     prev?.id === cameraId ? { ...prev, aoi } : prev
+  //   );
+  // };
 
   const handleSaveAOI = (cameraId, aoi) => {
-  setSelectedCameras(prev => {
-    const safePrev = Array.isArray(prev) ? prev : [];
-    const exists = safePrev.find(cam => cam.id === cameraId);
+    setSelectedCameras((prev) => {
+      if (!Array.isArray(prev)) return prev;
 
-    if (!exists) {
-      const cam = cameras.find(c => c.id === cameraId);
-      return [...safePrev, { ...cam, aoi }];
-    }
+      if (!prev.some((cam) => cam.id === cameraId)) {
+        return prev;
+      }
 
-    return safePrev.map(cam =>
-      cam.id === cameraId ? { ...cam, aoi } : cam
+      return prev.map((cam) => (cam.id === cameraId ? { ...cam, aoi } : cam));
+    });
+
+    setActiveCamera((prev) =>
+      prev?.id === cameraId ? { ...prev, aoi } : prev,
     );
-  });
-
-  setActiveCamera(prev =>
-    prev?.id === cameraId ? { ...prev, aoi } : prev
-  );
-};
-
-
+  };
 
   const handleReInitialize = () => {
     setInitialized(false);
