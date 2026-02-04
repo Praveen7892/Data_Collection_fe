@@ -118,6 +118,29 @@ const useDataCollection = () => {
     }
   };
 
+
+  const handleSaveAOI = (cameraId, aoi) => {
+  setSelectedCameras(prev => {
+    const safePrev = Array.isArray(prev) ? prev : [];
+    const exists = safePrev.find(cam => cam.id === cameraId);
+
+    if (!exists) {
+      const cam = cameras.find(c => c.id === cameraId);
+      return [...safePrev, { ...cam, aoi }];
+    }
+
+    return safePrev.map(cam =>
+      cam.id === cameraId ? { ...cam, aoi } : cam
+    );
+  });
+
+  setActiveCamera(prev =>
+    prev?.id === cameraId ? { ...prev, aoi } : prev
+  );
+};
+
+
+
   const handleReInitialize = () => {
     setInitialized(false);
     setSelectedCameras([]);
@@ -193,6 +216,8 @@ const useDataCollection = () => {
     handleInitialize,
     handleReInitialize,
     setInitialized,
+
+    handleSaveAOI,
   };
 };
 
