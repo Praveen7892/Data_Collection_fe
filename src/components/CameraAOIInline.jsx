@@ -15,6 +15,7 @@ const CameraAOIInline = ({ camera, onSave }) => {
         <input
           type="range"
           max={2160}
+          step={2}
           value={aoi.height}
           onChange={(e) =>
             setAoi({ ...aoi, height: +e.target.value })
@@ -28,6 +29,7 @@ const CameraAOIInline = ({ camera, onSave }) => {
         <input
           type="range"
           max={3840}
+          step={2}
           value={aoi.width}
           onChange={(e) =>
             setAoi({ ...aoi, width: +e.target.value })

@@ -94,23 +94,14 @@ const useDataCollection = () => {
       setLoading(true);
       setError(null);
 
-      // const payload = {
-      //   mode,
-      //   cameras: selectedCameras.map((cam) => ({
-      //     id: cam.id,
-      //     serial_number: cam.serial_number,
-      //     aoi: cam.aoi,
-      //   })),
-      // };
-
       const payload = {
         mode,
         cameras: selectedCameras.map((cam) => {
           const defaultAOI = {
-            height: cam.height,
-            width: cam.width,
-            offset_x: cam.offset_x ?? 0,
-            offset_y: cam.offset_y ?? 0,
+            Height: cam.height,
+            Width: cam.width,
+            OffsetX: cam.offset_x ?? 0,
+            OffsetY: cam.offset_y ?? 0,
           };
 
           return {
@@ -118,10 +109,10 @@ const useDataCollection = () => {
             serial_number: cam.serial_number,
             aoi: cam.aoi
               ? {
-                  height: cam.aoi.height,
-                  width: cam.aoi.width,
-                  offset_x: cam.aoi.offsetX,
-                  offset_y: cam.aoi.offsetY,
+                  Height: cam.aoi.height,
+                  Width: cam.aoi.width,
+                  OffsetX: cam.aoi.offsetX,
+                  OffsetY: cam.aoi.offsetY,
                 }
               : defaultAOI,
           };
