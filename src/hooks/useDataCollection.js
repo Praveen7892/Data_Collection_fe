@@ -100,8 +100,10 @@ const useDataCollection = () => {
           const defaultAOI = {
             Height: cam.height,
             Width: cam.width,
-            OffsetX: cam.offset_x ?? 0,
-            OffsetY: cam.offset_y ?? 0,
+            OffsetX: cam.offset_x ?? cam.offset_x,
+            OffsetY: cam.offset_y ?? cam.offset_y,
+            TriggerMode: cam.trigger_mode ?? cam.trigger_mode,
+            exposure_time_us: cam.exposure_time_us ?? cam.exposure_time_us,
           };
 
           return {
@@ -113,6 +115,8 @@ const useDataCollection = () => {
                   Width: cam.aoi.width,
                   OffsetX: cam.aoi.offsetX,
                   OffsetY: cam.aoi.offsetY,
+                  TriggerMode: cam.aoi.trigger_mode,
+                  exposure_time_us: cam.exposure_time_us,
                 }
               : defaultAOI,
           };
